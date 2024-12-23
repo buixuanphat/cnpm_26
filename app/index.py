@@ -733,27 +733,6 @@ def chuyen_diem_hoc_ky():
     flash('Đã chuyển điểm sang học kỳ tiếp theo!', 'success')
     return redirect('/admin')
 
-def tinh_diem_trung_binh(hoc_sinh_id, hoc_ky_id):
-    danh_sach_mon_hoc = MonHoc.query.all()
-    diem_trung_binh = 0
-    so_mon_hoc = 0
-
-    for mon_hoc in danh_sach_mon_hoc:
-        # Lấy điểm từ bảng `BangDiem`
-        diem_15p = BangDiem.query.filter_by(hocSinh_id=hoc_sinh_id, hocKy_id=hoc_ky_id, monHoc_id=mon_hoc.idMonHoc, loai_diem='15p').first()
-        diem_1_tiet = BangDiem.query.filter_by(hocSinh_id=hoc_sinh_id, hocKy_id=hoc_ky_id, monHoc_id=mon_hoc.idMonHoc, loai_diem='1_tiet').first()
-        diem_thi = BangDiem.query.filter_by(hocSinh_id=hoc_sinh_id, hocKy_id=hoc_ky_id, monHoc_id=mon_hoc.idMonHoc, loai_diem='thi').first()
-
-        if diem_15p is not None and diem_1_tiet is not None and diem_thi is not None:
-            # Tính điểm trung bình môn
-            diem_tb_mon = (diem_15p.diem + diem_1_tiet.diem * 2 + diem_thi.diem * 3) / 6
-            diem_trung_binh += diem_tb_mon
-            so_mon_hoc += 1
-
-    if so_mon_hoc > 0:
-        return round(diem_trung_binh / so_mon_hoc, 2)  # Trả về điểm trung bình
-    return None  # Nếu không có điểm, trả về None
-
 @app.route('/xac-nhan-bang-diem', methods=['POST'])
 def xac_nhan_bang_diem():
     taikhoan = session.get('taikhoan')
@@ -770,7 +749,7 @@ def xac_nhan_bang_diem():
 
     for hs in danh_sach_hoc_sinh:
         # Tính điểm trung bình của học sinh
-        diem_tb = tinh_diem_trung_binh(hs.idHocSinh, hoc_ky_id)
+        diem_tb = dao.tinh_diem_trung_binh(hs.idHocSinh, hoc_ky_id)
 
         if diem_tb is not None:
             # Kiểm tra xem đã có điểm trung bình trong bảng bang_diem_tb chưa
