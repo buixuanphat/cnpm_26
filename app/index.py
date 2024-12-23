@@ -32,7 +32,7 @@ def login_process():
             if nv.get_VaiTro() == UserRole.NHANVIEN:
                 print(nv.id)
                 login_user(nv)
-                return redirect('/nhan-vien/{}'.format(nv.get_taiKhoan()))
+                return redirect(f'/nhan-vien/{taiKhoan}')
             elif nv.get_VaiTro() == UserRole.NGUOIQUANTRI:
                 login_user(nv)
                 return redirect('/admin')
@@ -40,7 +40,7 @@ def login_process():
             gv = dao.auth_giao_vien(taikhoan=taiKhoan, matkhau=matKhau)
             if gv:
                 login_user(gv)
-                return redirect('/giao-vien/{}'.format(gv.get_taiKhoan()))
+                return redirect(f'/giao-vien/{taiKhoan}')
 
         err_msg = "Sai tài khoản/ mật khẩu"
     return render_template('login.html', err_msg=err_msg)
@@ -86,7 +86,7 @@ def kiem_tra_tuoi(taikhoan):
             return render_template('nhap_thong_tin_hoc_sinh.html', ngay_sinh=ngay_sinh, taikhoan=taikhoan)
         else:
             flash(f"Tuổi không phù hợp: {tuoi} tuổi!!!", "warning")
-            return redirect('/nhan-vien/{}'.format(taikhoan))
+            return redirect(f'/nhan-vien/{taikhoan}')
     return "Không nhận được thông tin ngày sinh!"
 
 
@@ -118,7 +118,7 @@ def luu_hoc_sinh():
     db.session.commit()
 
     flash("Học sinh đã được lưu thành công!", "success")
-    return redirect("/nhan-vien/{}".format(taikhoan))
+    return redirect(f"/nhan-vien/{taikhoan}")
 
 
 @app.route('/nhan-vien/<taikhoan>/danh-sach-lop')
@@ -249,7 +249,7 @@ def sua_ds_lop(id,taikhoan):
             lop.idPhongHoc = int(request.form.get("phongHoc"))
             db.session.commit()
             flash("Cập nhật thông tin lớp thành công", "success")
-            return redirect('/nhan-vien/{}/danh-sach-lop'.format(taikhoan))  # Chuyển về trang danh sách lớp
+            return redirect(f'/nhan-vien/{taikhoan}/danh-sach-lop')  # Chuyển về trang danh sách lớp
         except Exception as e:
             db.session.rollback()
             flash(f"Lỗi khi lưu dữ liệu: {str(e)}", "danger")
@@ -426,14 +426,37 @@ def danh_sach_lop_chu_nhiem(taikhoan):
             }
             diem_cua_hoc_sinh = BangDiem.query.filter_by(hocSinh_id=hs.idHocSinh, hocKy_id=hoc_ky_id).all()
 
+
             # Tính điểm trung bình môn
-            for diem in diem_cua_hoc_sinh:
-                loai_diem = diem.loai_diem
-                ten_mon = diem.mon_hoc.tenMonHoc
-                bang_diem[hs.idHocSinh][loai_diem][ten_mon] = diem.diem
+            # for diem in diem_cua_hoc_sinh:
+            #     if diem.loai_diem.startswith("15p"):
+            #         loai_diem = "15p"
+            #     elif diem.loai_diem.startswith("1_tiet"):
+            #         loai_diem = "1_tiet"
+            #     else:
+            #         loai_diem = "thi"
+            #     ten_mon = diem.mon_hoc.tenMonHoc
+            #     bang_diem[hs.idHocSinh][loai_diem][ten_mon] = diem.diem
 
             for mon in danh_sach_mon_hoc:
                 ten_mon = mon.tenMonHoc
+                diem_hs_mon = {diem for diem in diem_cua_hoc_sinh if diem.monHoc_id.__eq__(mon.idMonHoc)}
+                ds_15p=[]
+                ds_1_tiet=[]
+                thi=[]
+                for diem in diem_hs_mon:
+                    if diem.loai_diem.startswith("15p"):
+                        ds_15p.append(diem.diem)
+                    elif diem.loai_diem.startswith("1_tiet"):
+                        ds_1_tiet.append(diem.diem)
+                    else:
+                        thi.append(diem.diem)
+                tb_15p = round(sum(ds_15p)/len(ds_15p),2) if len(ds_15p)>0 else None
+                tb_1Tiet = round(sum(ds_1_tiet)/len(ds_1_tiet),2) if len(ds_1_tiet)>0 else None
+                dThi = round(sum(thi)/len(thi),2) if len(thi)>0 else None
+                bang_diem[hs.idHocSinh]["15p"][ten_mon] = tb_15p
+                bang_diem[hs.idHocSinh]["1_tiet"][ten_mon] = tb_1Tiet
+                bang_diem[hs.idHocSinh]["thi"][ten_mon] = dThi
                 if (
                     bang_diem[hs.idHocSinh]["15p"][ten_mon] is not None
                     and bang_diem[hs.idHocSinh]["1_tiet"][ten_mon] is not None
@@ -445,6 +468,8 @@ def danh_sach_lop_chu_nhiem(taikhoan):
                         + bang_diem[hs.idHocSinh]["thi"][ten_mon] * 3
                     ) / 6
                     bang_diem[hs.idHocSinh]["tb_mon"][ten_mon] = round(tb_mon, 2)
+
+
 
             # Kiểm tra điều kiện nhập đủ điểm Toán, Văn, Anh trước khi tính điểm trung bình toàn bộ môn
             mon_can_thiet = ["Toán", "Văn", "Anh"]
@@ -521,7 +546,7 @@ def nhap_diem(lop_id, taikhoan):
                 hocSinh_id=hoc_sinh.idHocSinh,
                 monHoc_id=mon_hoc.idMonHoc,
                 hocKy_id=hoc_ky.idHocKy
-            ).filter(BangDiem.loai_diem.like("15p%")).order_by(BangDiem.loai_diem)
+            ).filter(BangDiem.loai_diem.like("15p%"))
         ]
         hoc_sinh.diem_1_tiet = [
             diem.diem for diem in BangDiem.query.filter_by(
@@ -536,6 +561,7 @@ def nhap_diem(lop_id, taikhoan):
             hocKy_id=hoc_ky.idHocKy,
             loai_diem='thi'
         ).first()
+        # if hoc_sinh.diem_15p is not None and hoc_sinh.diem_1_tiet is not None and diem_thi is not None:
         hoc_sinh.diem_thi = diem_thi.diem if diem_thi else None
 
     # Nếu POST, lưu dữ liệu
@@ -611,7 +637,6 @@ def nhap_diem(lop_id, taikhoan):
                         db.session.add(bang_diem_thi)
                     else:
                         bang_diem_thi.diem = float(diem_thi)
-
             db.session.commit()
             flash("Điểm đã được lưu thành công!", "success")
             return redirect(f'/giao-vien/{taikhoan}/danh-sach-lop-day/{lop_id}')
@@ -672,21 +697,15 @@ def xem_lop(lop_id, taikhoan):
         hoc_sinh.diem_thi = diem_thi.diem if diem_thi is not None else 0
 
         # Tính điểm trung bình nếu đủ điểm
-        if hoc_sinh.tb_15p is not None and hoc_sinh.tb_1_tiet is not None and hoc_sinh.diem_thi is not None:
+        if diem_15p is not None and diem_1_tiet is not None and diem_thi is not None:
             hoc_sinh.diem_trung_binh = round(
-                (hoc_sinh.tb_15p + hoc_sinh.tb_1_tiet * 2 + hoc_sinh.diem_thi * 3) / 6, 2
+                ((hoc_sinh.tb_15p) + (hoc_sinh.tb_1_tiet * 2) + (hoc_sinh.diem_thi * 3)) / 6, 2
             )
         else:
             hoc_sinh.diem_trung_binh = None
 
-    return render_template(
-        'danh_sach_hs.html',
-        lop=lop,
-        danh_sach_hoc_sinh=danh_sach_hoc_sinh,
-        hoc_ky=hoc_ky,
-        taikhoan=taikhoan
-    )
 
+    return render_template('danh_sach_hs.html',lop=lop,danh_sach_hoc_sinh=danh_sach_hoc_sinh,hoc_ky=hoc_ky,taikhoan=taikhoan)
 
 @app.route('/chuyen-diem-hoc-ky', methods=['POST'])
 def chuyen_diem_hoc_ky():
@@ -774,8 +793,8 @@ def xac_nhan_bang_diem():
 
 
 
-@app.route('/bang-diem-tong-ket', methods=['GET'])
-def bang_diem_tong_ket():
+@app.route('/giao-vien/<taikhoan>/lop-chu-nhiem/bang-diem-tong-ket', methods=['GET'])
+def bang_diem_tong_ket(taikhoan):
     danh_sach_hoc_sinh = HocSinh.query.all()
     bang_diem_tong_ket = []
 
@@ -796,7 +815,8 @@ def bang_diem_tong_ket():
     return render_template(
         'bang_diem_tong_ket.html',
         bang_diem_tong_ket=bang_diem_tong_ket,
-        enumerate=enumerate
+        enumerate=enumerate,
+        taikhoan=taikhoan
     )
 
 
