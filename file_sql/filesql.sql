@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
--- Host: localhost    Database: manadb
+-- Host: 127.0.0.1    Database: manadb
 -- ------------------------------------------------------
 -- Server version	8.0.40
 
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `bang_diem`;
 CREATE TABLE `bang_diem` (
   `idBangDiem` int NOT NULL AUTO_INCREMENT,
   `hocSinh_id` int NOT NULL,
-  `loai_diem` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `loai_diem` varchar(20) DEFAULT NULL,
   `diem` float DEFAULT NULL,
   `monHoc_id` int NOT NULL,
   `giaoVien_id` int NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `bang_diem` (
   CONSTRAINT `bang_diem_ibfk_2` FOREIGN KEY (`monHoc_id`) REFERENCES `monhoc` (`idMonHoc`),
   CONSTRAINT `bang_diem_ibfk_3` FOREIGN KEY (`giaoVien_id`) REFERENCES `giaovien` (`id`),
   CONSTRAINT `bang_diem_ibfk_4` FOREIGN KEY (`hocKy_id`) REFERENCES `hoc_ky` (`idHocKy`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `bang_diem` (
 
 LOCK TABLES `bang_diem` WRITE;
 /*!40000 ALTER TABLE `bang_diem` DISABLE KEYS */;
-INSERT INTO `bang_diem` VALUES (1,4,'15p_1',9,3,3,1),(2,4,'15p_2',8,3,3,1),(3,4,'15p_3',8.5,3,3,1),(4,5,'15p_1',6,3,3,1),(5,5,'15p_2',6,3,3,1),(6,5,'15p_3',8,3,3,1),(7,4,'1_tiet_1',10,3,3,1),(8,4,'1_tiet_2',10,3,3,1),(9,5,'1_tiet_1',7,3,3,1),(10,5,'1_tiet_2',7.5,3,3,1),(11,4,'thi',9.5,3,3,1),(12,5,'thi',9,3,3,1),(13,4,'15p_1',7,1,4,1),(14,4,'15p_2',6,1,4,1),(15,4,'15p_3',8,1,4,1),(16,4,'15p_4',7.5,1,4,1),(17,4,'15p_5',8,1,4,1),(18,4,'1_tiet_1',9,1,4,1),(19,4,'1_tiet_2',7,1,4,1),(20,4,'1_tiet_3',8,1,4,1),(21,4,'thi',10,1,4,1),(22,5,'15p_1',7,1,4,1),(23,5,'15p_2',5,1,4,1),(24,5,'15p_3',8,1,4,1),(25,5,'15p_4',9,1,4,1),(26,5,'15p_5',7,1,4,1),(27,5,'1_tiet_1',8.5,1,4,1),(28,5,'1_tiet_2',6,1,4,1),(29,5,'1_tiet_3',9,1,4,1),(30,5,'thi',8,1,4,1),(31,4,'15p_1',9,2,6,1),(32,4,'15p_2',9,2,6,1),(33,4,'15p_3',8,2,6,1),(34,4,'15p_4',7,2,6,1),(35,4,'15p_5',8,2,6,1),(36,4,'1_tiet_1',10,2,6,1),(37,4,'1_tiet_2',10,2,6,1),(38,4,'1_tiet_3',9,2,6,1),(39,4,'thi',9.5,2,6,1),(40,5,'15p_1',8,2,6,1),(41,5,'15p_2',7,2,6,1),(42,5,'15p_3',9,2,6,1),(43,5,'15p_4',7,2,6,1),(44,5,'15p_5',8,2,6,1),(45,5,'1_tiet_1',8,2,6,1),(46,5,'1_tiet_2',9,2,6,1),(47,5,'1_tiet_3',10,2,6,1),(48,5,'thi',8,2,6,1);
+INSERT INTO `bang_diem` VALUES (1,1,'15p_1',8,3,7,1),(2,1,'15p_2',9,3,7,1),(3,1,'15p_3',7,3,7,1),(4,1,'1_tiet_1',8,3,7,1),(5,1,'1_tiet_2',8,3,7,1),(6,1,'thi',8.75,3,7,1),(7,2,'15p_1',8,3,7,1),(8,2,'15p_2',9,3,7,1),(9,2,'15p_3',6,3,7,1),(10,2,'1_tiet_1',7.5,3,7,1),(11,2,'1_tiet_2',8.5,3,7,1),(12,2,'thi',7.5,3,7,1),(13,1,'15p_1',6,1,4,1),(14,1,'15p_2',7,1,4,1),(15,1,'15p_3',9,1,4,1),(16,1,'15p_4',8,1,4,1),(17,1,'15p_5',7,1,4,1),(18,1,'1_tiet_1',9,1,4,1),(19,1,'1_tiet_2',9,1,4,1),(20,1,'1_tiet_3',9,1,4,1),(21,1,'thi',8.5,1,4,1),(22,2,'15p_1',6,1,4,1),(23,2,'15p_2',9,1,4,1),(24,2,'15p_3',9,1,4,1),(25,2,'15p_4',8.5,1,4,1),(26,2,'15p_5',7,1,4,1),(27,2,'1_tiet_1',9,1,4,1),(28,2,'1_tiet_2',9,1,4,1),(29,2,'1_tiet_3',9,1,4,1),(30,2,'thi',7.5,1,4,1),(31,1,'15p_1',5,2,6,1),(32,1,'15p_2',6,2,6,1),(33,1,'15p_3',7,2,6,1),(34,1,'15p_4',8,2,6,1),(35,1,'15p_5',9,2,6,1),(36,1,'1_tiet_1',8,2,6,1),(37,1,'1_tiet_2',6,2,6,1),(38,1,'1_tiet_3',9,2,6,1),(39,1,'thi',8,2,6,1),(40,2,'15p_1',6,2,6,1),(41,2,'15p_2',6,2,6,1),(42,2,'15p_3',8,2,6,1),(43,2,'15p_4',8,2,6,1),(44,2,'15p_5',9,2,6,1),(45,2,'1_tiet_1',8,2,6,1),(46,2,'1_tiet_2',6,2,6,1),(47,2,'1_tiet_3',9,2,6,1),(48,2,'thi',8,2,6,1);
 /*!40000 ALTER TABLE `bang_diem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +106,7 @@ CREATE TABLE `danh_sach_lop` (
   CONSTRAINT `danh_sach_lop_ibfk_1` FOREIGN KEY (`idPhongHoc`) REFERENCES `phong_hoc` (`idPhongHoc`),
   CONSTRAINT `danh_sach_lop_ibfk_2` FOREIGN KEY (`giaoVienChuNhiem_id`) REFERENCES `giaovien` (`id`),
   CONSTRAINT `danh_sach_lop_ibfk_3` FOREIGN KEY (`hocKy_id`) REFERENCES `hoc_ky` (`idHocKy`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +115,7 @@ CREATE TABLE `danh_sach_lop` (
 
 LOCK TABLES `danh_sach_lop` WRITE;
 /*!40000 ALTER TABLE `danh_sach_lop` DISABLE KEYS */;
-INSERT INTO `danh_sach_lop` VALUES (24,1,'10A1','Khối 10',7,2,2,1,1),(25,NULL,'11A1','Khối 11',3,2,2,1,1);
+INSERT INTO `danh_sach_lop` VALUES (26,NULL,'10A1','Khối 10',7,2,2,1,1),(27,NULL,'11A1','Khối 11',3,2,2,1,1);
 /*!40000 ALTER TABLE `danh_sach_lop` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `giao_vien_day_hoc` (
   KEY `idDsLop` (`idDsLop`),
   CONSTRAINT `giao_vien_day_hoc_ibfk_1` FOREIGN KEY (`idGiaoVien`) REFERENCES `giaovien` (`id`),
   CONSTRAINT `giao_vien_day_hoc_ibfk_2` FOREIGN KEY (`idDsLop`) REFERENCES `danh_sach_lop` (`maDsLop`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +181,7 @@ CREATE TABLE `giao_vien_day_hoc` (
 
 LOCK TABLES `giao_vien_day_hoc` WRITE;
 /*!40000 ALTER TABLE `giao_vien_day_hoc` DISABLE KEYS */;
-INSERT INTO `giao_vien_day_hoc` VALUES (70,7,24),(71,4,24),(72,6,24),(73,3,25),(74,4,25),(75,6,25);
+INSERT INTO `giao_vien_day_hoc` VALUES (76,7,26),(77,4,26),(78,6,26),(79,3,27),(80,4,27),(81,6,27);
 /*!40000 ALTER TABLE `giao_vien_day_hoc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,7 +268,7 @@ CREATE TABLE `hoc_sinh` (
 
 LOCK TABLES `hoc_sinh` WRITE;
 /*!40000 ALTER TABLE `hoc_sinh` DISABLE KEYS */;
-INSERT INTO `hoc_sinh` VALUES (1,'Nguyễn Quang Trung',1,'2009-02-21','Khối 10','Tp. Hồ Chí Minh','0987654321','quangtrung@gmail.com',24),(2,'Trần Thị Tuyết',0,'2009-03-27','Khối 10','Tp. Hồ Chí Minh','0987456321','tuyettran@gmail.com',24),(4,'Nguyễn Trà My',0,'2008-05-21','Khối 11','Tp. Hồ Chí Minh','0762590922','tramy@gmail.com',25),(5,'Trần Quốc Tuấn',1,'2008-04-01','Khối 11','Tp. Hồ Chí Minh','0762595241','tuan123@gmail.com',25);
+INSERT INTO `hoc_sinh` VALUES (1,'Nguyễn Quang Trung',1,'2009-02-21','Khối 10','Tp. Hồ Chí Minh','0987654321','quangtrung@gmail.com',26),(2,'Trần Thị Tuyết',0,'2009-03-27','Khối 10','Tp. Hồ Chí Minh','0987456321','tuyettran@gmail.com',26),(4,'Nguyễn Trà My',0,'2008-05-21','Khối 11','Tp. Hồ Chí Minh','0762590922','tramy@gmail.com',27),(5,'Trần Quốc Tuấn',1,'2008-04-01','Khối 11','Tp. Hồ Chí Minh','0762595241','tuan123@gmail.com',27);
 /*!40000 ALTER TABLE `hoc_sinh` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -477,4 +477,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-23 14:55:19
+-- Dump completed on 2024-12-23 16:36:28
