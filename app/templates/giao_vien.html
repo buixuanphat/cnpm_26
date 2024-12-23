@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Giáo Viên</title>
+</head>
+<body>
+    <h1>Chào mừng {{ current_user.hoTen }}</h1>
+    <p>Đây là giao diện dành cho giáo viên.</p>
+    <ul>
+        <li><a href="/giao-vien/{{taikhoan}}/danh-sach-lop-day">Danh sách lớp dạy</a></li>
+        {% if giaovien.lop %}
+        <li><a href="/giao-vien/{{taikhoan}}/lop-chu-nhiem">Danh sách lớp chủ nhiệm</a></li>
+        {% endif %}
+        <li><a href="/logout">Đăng xuất</a></li>
+    </ul>
+</body>
+</html>

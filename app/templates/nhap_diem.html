@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập điểm</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { text-align: center; padding: 10px; border: 1px solid #ddd; }
+        button { padding: 10px 20px; border: none; border-radius: 5px; background-color: #4CAF50; color: white; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+        h1, h2 { text-align: center; color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <h1>Nhập điểm - Học kỳ: {{ hoc_ky.hocKy }} ({{ hoc_ky.namHoc }})</h1>
+    <h2>Môn học: {{ mon_hoc.tenMonHoc }}</h2>
+    <p>Điểm 15p: {{ so_cot_15p }} cột | Điểm 1 tiết: {{ so_cot_1_tiet }} cột | Điểm thi: 1 cột</p>
+
+    <form method="POST">
+        <table>
+            <thead>
+                <tr>
+                    <th>Họ và tên</th>
+                    {% for i in range(so_cot_15p) %}
+                    <th>Điểm 15p {{ i + 1 }}</th>
+                    {% endfor %}
+                    {% for i in range(so_cot_1_tiet) %}
+                    <th>Điểm 1 tiết {{ i + 1 }}</th>
+                    {% endfor %}
+                    <th>Điểm Thi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hoc_sinh in danh_sach_hoc_sinh %}
+                <tr>
+                    <td>{{ hoc_sinh.hoTen }}</td>
+                    {% for i in range(so_cot_15p) %}
+                    <td>
+                        <input type="number" name="diem_15p_{{ i }}[]" step="0.25" min="0" max="10"
+                               value="{{ hoc_sinh.diem_15p[i] if hoc_sinh.diem_15p and i < hoc_sinh.diem_15p|length else '' }}">
+                    </td>
+                    {% endfor %}
+                    {% for i in range(so_cot_1_tiet) %}
+                    <td>
+                        <input type="number" name="diem_1_tiet_{{ i }}[]" step="0.25" min="0" max="10"
+                               value="{{ hoc_sinh.diem_1_tiet[i] if hoc_sinh.diem_1_tiet and i < hoc_sinh.diem_1_tiet|length else '' }}">
+                    </td>
+                    {% endfor %}
+                    <td><input type="number" name="diem_thi[]" step="0.25" min="0" max="10" value="{{ hoc_sinh.diem_thi }}"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="text-align: center;">
+            <button type="submit">Lưu thông tin</button>
+        </div>
+    </form>
+</body>
+</html>

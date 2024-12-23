@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Điểm Tổng Kết</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: transparent;
+            color: #4CAF50;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: #4CAF50;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .flash-message {
+            margin: 20px 0;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <a href="/danh-sach-lop-chu-nhiem">Quay lại</a>
+    <h1>Bảng Điểm Tổng Kết</h1>
+
+    <!-- Thêm phần hiển thị thông báo -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-message">
+            {% for category, message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/xuat-bang-diem-tong-ket">
+        <button type="submit">Xuất Bảng Điểm</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Họ Tên</th>
+                <th>Lớp</th>
+                <th>Điểm TB HK1</th>
+                <th>Điểm TB HK2</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for idx, diem in enumerate(bang_diem_tong_ket) %}
+            <tr>
+                <td>{{ idx + 1 }}</td>
+                <td>{{ diem.ho_ten }}</td>
+                <td>{{ diem.lop }}</td>
+                <td>{{ diem.diem_tb_hk1 or " " }}</td>
+                <td>{{ diem.diem_tb_hk2 or " " }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

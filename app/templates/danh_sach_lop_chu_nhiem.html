@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách lớp chủ nhiệm</title>
+    <style>
+        /* CSS Reset */
+        body, h1, table {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .form-container label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        .form-container select {
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-container select:hover {
+            border-color: #4CAF50;
+            background-color: #f9f9f9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #000;
+        }
+
+        th {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #000;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #388E3C;
+        }
+
+        .table-container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .btn-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <a href="/giao-vien/{{taikhoan}}">Quay lại</a>
+        <h1>Danh sách lớp chủ nhiệm: {{ lop.tenLop }}</h1>
+
+        <!-- Nút chuyển hướng tới bảng điểm tổng kết -->
+        <div class="confirm-container">
+            <form method="GET" action="/bang-diem-tong-ket">
+                <button type="submit">Bảng Điểm Tổng Kết</button>
+            </form>
+        </div>
+
+        <!-- Phần chọn học kỳ với giao diện mới -->
+        <div class="form-container">
+            <form method="GET" action="">
+                <label for="hocKy">Chọn học kỳ:</label>
+                <select name="hocKy" id="hocKy" onchange="this.form.submit()">
+                    {% for ky in danh_sach_hoc_ky %}
+                        <option value="{{ ky.idHocKy }}" {% if ky.idHocKy == hoc_ky.idHocKy %}selected{% endif %}>
+                            Học kỳ {{ ky.hocKy }} ({{ ky.namHoc }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">Họ tên</th>
+                    {% for mon in danh_sach_mon_hoc %}
+                        <th colspan="3">{{ mon.tenMonHoc }}</th>
+                    {% endfor %}
+                    <th rowspan="2">Điểm Trung Bình</th>
+                    <th rowspan="2">Xếp Loại</th>
+                </tr>
+                <tr>
+                    {% for mon in danh_sach_mon_hoc %}
+                        <th>15p</th>
+                        <th>1 tiết</th>
+                        <th>Thi</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for hoc_sinh in danh_sach_hoc_sinh %}
+                <tr>
+                    <td>{{ hoc_sinh.hoTen }}</td>
+                    {% for mon in danh_sach_mon_hoc %}
+                        <td>{{ bang_diem[hoc_sinh.idHocSinh]["15p"].get(mon.tenMonHoc, "") if bang_diem[hoc_sinh.idHocSinh]["15p"].get(mon.tenMonHoc, "") is not none else " " }}</td>
+                        <td>{{ bang_diem[hoc_sinh.idHocSinh]["1_tiet"].get(mon.tenMonHoc, "") if bang_diem[hoc_sinh.idHocSinh]["1_tiet"].get(mon.tenMonHoc, "") is not none else " " }}</td>
+                        <td>{{ bang_diem[hoc_sinh.idHocSinh]["thi"].get(mon.tenMonHoc, "") if bang_diem[hoc_sinh.idHocSinh]["thi"].get(mon.tenMonHoc, "") is not none else " " }}</td>
+                    {% endfor %}
+                    <td>{{ hoc_sinh.diem_trung_binh if hoc_sinh.diem_trung_binh is not none else " " }}</td>
+                    <td>{{ hoc_sinh.xep_loai if hoc_sinh.xep_loai is not none else " " }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Nút xác nhận bảng điểm ở dưới cùng -->
+        <div class="btn-container">
+            <form method="POST" action="/xac-nhan-bang-diem">
+                <input type="hidden" name="maDsLop" value="{{ lop.maDsLop }}">
+                <button type="submit">Xác nhận bảng điểm</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

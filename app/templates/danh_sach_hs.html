@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách học sinh</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; padding: 20px; }
+        h1 { text-align: center; color: #4CAF50; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { text-align: center; padding: 10px; border: 1px solid #ddd; }
+        a { color: #4CAF50; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .button { text-align: center; margin-top: 20px; }
+        .button a { background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+        .button a:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <a href="/giao-vien/{{taikhoan}}/danh-sach-lop-day">Quay lại</a>
+    <h1>Danh sách học sinh lớp {{ lop.tenLop }}</h1>
+    <h3>Học kỳ: {{ hoc_ky.hocKy }} ({{ hoc_ky.namHoc }})</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Họ và tên</th>
+                <th>Điểm TB 15p</th>
+                <th>Điểm TB 1 tiết</th>
+                <th>Điểm Thi</th>
+                <th>Điểm Trung Bình</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hoc_sinh in danh_sach_hoc_sinh %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ hoc_sinh.hoTen }}</td>
+                <td>{{ hoc_sinh.tb_15p if hoc_sinh.tb_15p is not None else '' }}</td>
+                <td>{{ hoc_sinh.tb_1_tiet if hoc_sinh.tb_1_tiet is not None else '' }}</td>
+                <td>{{ hoc_sinh.diem_thi if hoc_sinh.diem_thi is not None else '' }}</td>
+                <td>{{ hoc_sinh.diem_trung_binh if hoc_sinh.diem_trung_binh is not None else '' }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">Không có học sinh nào trong lớp này.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="button">
+        <a href="/giao-vien/{{taikhoan}}/danh-sach-lop-day/{{ lop.maDsLop }}/nhap-diem">Nhập điểm</a>
+
+    </div>
+</body>
+</html>
