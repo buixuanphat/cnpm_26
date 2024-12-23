@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -49,10 +49,10 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ hoc_sinh.hoTen }}</td>
-                <td>{{ hoc_sinh.tb_15p if hoc_sinh.tb_15p else '' }}</td>
-                <td>{{ hoc_sinh.tb_1_tiet if hoc_sinh.tb_1_tiet else '' }}</td>
-                <td>{{ hoc_sinh.diem_thi if hoc_sinh.diem_thi else '' }}</td>
-                <td>{{ hoc_sinh.diem_trung_binh if hoc_sinh.diem_trung_binh else '' }}</td>
+                <td>{{ hoc_sinh.tb_15p if hoc_sinh.tb_15p is not none else '' }}</td>
+                <td>{{ hoc_sinh.tb_1_tiet if hoc_sinh.tb_1_tiet is not none else '' }}</td>
+                <td>{{ hoc_sinh.diem_thi if hoc_sinh.diem_thi is not none else '' }}</td>
+                <td>{{ hoc_sinh.diem_trung_binh if hoc_sinh.diem_trung_binh is not none else '' }}</td>
             </tr>
             {% else %}
             <tr>

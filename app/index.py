@@ -401,6 +401,7 @@ def danh_sach_lop_day(taikhoan):
 @app.route('/giao-vien/<taikhoan>/lop-chu-nhiem')
 def danh_sach_lop_chu_nhiem(taikhoan):
     # Kiểm tra giáo viên có chủ nhiệm lớp nào không
+    session['taikhoan'] = taikhoan
     lop_chu_nhiem = DanhSachLop.query.filter_by(giaoVienChuNhiem_id=current_user.id).first()
 
     if lop_chu_nhiem:
@@ -692,9 +693,9 @@ def xem_lop(lop_id, taikhoan):
         ).first()
 
         # Tính trung bình 15 phút và 1 tiết
-        hoc_sinh.tb_15p = round(sum(diem_15p) / len(diem_15p), 2) if len(diem_15p) > 0 else 0
-        hoc_sinh.tb_1_tiet = round(sum(diem_1_tiet) / len(diem_1_tiet), 2) if len(diem_1_tiet) > 0 else 0
-        hoc_sinh.diem_thi = diem_thi.diem if diem_thi is not None else 0
+        hoc_sinh.tb_15p = round(sum(diem_15p) / len(diem_15p), 2) if len(diem_15p) > 0 else ""
+        hoc_sinh.tb_1_tiet = round(sum(diem_1_tiet) / len(diem_1_tiet), 2) if len(diem_1_tiet) > 0 else ""
+        hoc_sinh.diem_thi = diem_thi.diem if diem_thi is not None else ""
 
         # Tính điểm trung bình nếu đủ điểm
         if diem_15p is not None and diem_1_tiet is not None and diem_thi is not None:
@@ -755,12 +756,13 @@ def tinh_diem_trung_binh(hoc_sinh_id, hoc_ky_id):
 
 @app.route('/xac-nhan-bang-diem', methods=['POST'])
 def xac_nhan_bang_diem():
+    taikhoan = session.get('taikhoan')
     ma_ds_lop = request.form.get('maDsLop')  # Lấy mã lớp từ form
     lop = DanhSachLop.query.get(ma_ds_lop)  # Truy vấn thông tin lớp
 
-    if not lop:
-        flash("Lớp không tồn tại!", "danger")
-        return redirect('/danh-sach-lop-chu-nhiem')
+    # if not lop:
+    #     flash("Lớp không tồn tại!", "danger")
+    #     return redirect('/danh-sach-lop-chu-nhiem')
 
     # Lấy danh sách học sinh trong lớp
     danh_sach_hoc_sinh = HocSinh.query.filter(HocSinh.maDsLop == ma_ds_lop).all()
@@ -789,13 +791,16 @@ def xac_nhan_bang_diem():
     # Lưu tất cả thay đổi vào cơ sở dữ liệu
     db.session.commit()
     flash("Bảng điểm đã được xác nhận và lưu thành công!", "success")
-    return redirect('/danh-sach-lop-chu-nhiem')
+    return redirect(f'/giao-vien/{taikhoan}/lop-chu-nhiem')
 
 
 
 @app.route('/giao-vien/<taikhoan>/lop-chu-nhiem/bang-diem-tong-ket', methods=['GET'])
 def bang_diem_tong_ket(taikhoan):
-    danh_sach_hoc_sinh = HocSinh.query.all()
+
+    lop_chu_nhiem = DanhSachLop.query.filter_by(giaoVienChuNhiem_id=current_user.id).first()
+    danh_sach_hoc_sinh = HocSinh.query.filter_by(maDsLop=lop_chu_nhiem.maDsLop).all()
+
     bang_diem_tong_ket = []
 
     for hs in danh_sach_hoc_sinh:
