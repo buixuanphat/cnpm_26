@@ -9,9 +9,9 @@
             margin: 0;
             font-family: 'Roboto', sans-serif;
             background-image: url('https://res.cloudinary.com/dnbno2tkc/image/upload/v1735073428/index_kbcyiw.png');
-            background-size: cover; /* Đảm bảo hình ảnh bao phủ toàn bộ nền */
-            background-position: center; /* Căn giữa hình ảnh */
-            background-repeat: no-repeat; /* Không lặp lại hình ảnh */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: white;
             justify-content: center;
             align-items: flex-start;
@@ -36,12 +36,10 @@
             color: #333;
             border-radius: 15px;
             padding: 40px;
-            width: 100%;
             max-width: 450px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-top: 20px;
-            opacity: 0;
             animation: fadeInForm 1.5s forwards 1s;
             margin-left: 50px;
         }
@@ -68,7 +66,6 @@
             box-shadow: 0 0 5px rgba(0, 46, 156, 0.5);
         }
 
-        /* Hiệu ứng hover cho button */
         .btn-primary {
             background-color: #002E9C;
             border-radius: 10px;
@@ -83,26 +80,16 @@
             transform: scale(1.05);
         }
 
-        /* Hiệu ứng cho footer */
-        footer {
-            margin-top: 50px;
-            color: #D1E1FF;
-            font-size: 0.8rem;
-        }
-
-        /* Thêm hiệu ứng fade-in cho phần background */
         @keyframes fadeIn {
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
 
-        /* Hiệu ứng cho tiêu đề vào từ phía trên */
         @keyframes slideIn {
             0% { transform: translateY(-50px); opacity: 0; }
             100% { transform: translateY(0); opacity: 1; }
         }
 
-        /* Hiệu ứng fade-in cho form */
         @keyframes fadeInForm {
             0% { opacity: 0; }
             100% { opacity: 1; }
@@ -112,12 +99,10 @@
 </head>
 <body>
 
-    <!-- Dòng tiêu đề ở phía trên -->
     <div>
         <h1 class="title">HỆ THỐNG QUẢN LÝ HỌC SINH</h1>
     </div>
 
-    <!-- Form container được căn giữa -->
     <div class="form-container">
         <form method="POST" action="/login">
             <div class="mb-4">
