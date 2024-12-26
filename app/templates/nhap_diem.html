@@ -4,63 +4,212 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nhập điểm</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { text-align: center; padding: 10px; border: 1px solid #ddd; }
-        button { padding: 10px 20px; border: none; border-radius: 5px; background-color: #4CAF50; color: white; cursor: pointer; }
-        button:hover { background-color: #45a049; }
-        h1, h2 { text-align: center; color: #4CAF50; }
-        a {
-            color: #4CAF50;
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h1 {
+            color: #000000;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+
+        .table-container {
+            position: relative;
+            z-index: 1;
+            margin-top: 70px;
+            width: 100%;
+            max-width: 1100px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 1.5s ease-out;
+            margin-bottom: 20px;
+        }
+
+        .table-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: #3A6EA5;
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        tbody tr:hover {
+            transform: translateY(-5px) scale(1.02);
+            transition: 0.3s ease-in-out;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: white;
+            color: #000000;
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #5DADE2;
+            box-shadow: 0 0 5px rgba(93, 173, 226, 0.5);
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            background: #3A6EA5;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #25496e;
+            transform: translateY(-2px);
+        }
+
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: bold;
+            align-items: center;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: transform 0.3s ease, color 0.3s ease;
             text-decoration: none;
+        }
+
+        .back-link:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            input[type="number"] {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 10px 25px;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="/giao-vien/{{taikhoan}}/danh-sach-lop-day/{{ lop.maDsLop }}">Quay lại</a>
-    <h1>Nhập điểm - Học kỳ: {{ hoc_ky.hocKy }} ({{ hoc_ky.namHoc }})</h1>
-    <h2>Môn học: {{ mon_hoc.tenMonHoc }}</h2>
-    <p>Điểm 15p: {{ so_cot_15p }} cột | Điểm 1 tiết: {{ so_cot_1_tiet }} cột | Điểm thi: 1 cột</p>
-
+<a href="/giao-vien/{{taikhoan}}/danh-sach-lop-day/{{ lop.maDsLop }}" class="back-link">Quay lại</a>
+<div class="table-container">
     <form method="POST">
+        <h1>Lớp {{ lop.tenLop }} - Học kỳ {{ hoc_ky.hocKy }} - Môn {{ mon_hoc.tenMonHoc }}</h1>
         <table>
             <thead>
-                <tr>
-                    <th>Họ và tên</th>
-                    {% for i in range(so_cot_15p) %}
-                    <th>Điểm 15p {{ i + 1 }}</th>
-                    {% endfor %}
-                    {% for i in range(so_cot_1_tiet) %}
-                    <th>Điểm 1 tiết {{ i + 1 }}</th>
-                    {% endfor %}
-                    <th>Điểm Thi</th>
-                </tr>
+            <tr>
+                <th>Họ và tên</th>
+                {% for i in range(so_cot_15p) %}
+                <th>15 phút ({{ i + 1 }})</th>
+                {% endfor %}
+                {% for i in range(so_cot_1_tiet) %}
+                <th>1 tiết ({{ i + 1 }})</th>
+                {% endfor %}
+                <th>Thi</th>
+            </tr>
             </thead>
             <tbody>
-                {% for hoc_sinh in danh_sach_hoc_sinh %}
-                <tr>
-                    <td>{{ hoc_sinh.hoTen }}</td>
-                    {% for i in range(so_cot_15p) %}
-                    <td>
-                        <input type="number" name="diem_15p_{{ i }}[]" step="0.25" min="0" max="10"
-                               value="{{ hoc_sinh.diem_15p[i] if hoc_sinh.diem_15p and i < hoc_sinh.diem_15p|length else '' }}">
-                    </td>
-                    {% endfor %}
-                    {% for i in range(so_cot_1_tiet) %}
-                    <td>
-                        <input type="number" name="diem_1_tiet_{{ i }}[]" step="0.25" min="0" max="10"
-                               value="{{ hoc_sinh.diem_1_tiet[i] if hoc_sinh.diem_1_tiet and i < hoc_sinh.diem_1_tiet|length else '' }}">
-                    </td>
-                    {% endfor %}
-                    <td><input type="number" name="diem_thi[]" step="0.25" min="0" max="10" value="{{ hoc_sinh.diem_thi }}"></td>
-                </tr>
+            {% for hoc_sinh in danh_sach_hoc_sinh %}
+            <tr>
+                <td>{{ hoc_sinh.hoTen }}</td>
+                {% for i in range(so_cot_15p) %}
+                <td>
+                    <input type="number" name="diem_15p_{{ i }}[]" step="0.25" min="0" max="10"
+                           value="{{ hoc_sinh.diem_15p[i] if hoc_sinh.diem_15p and i < hoc_sinh.diem_15p|length else '' }}">
+                </td>
                 {% endfor %}
+                {% for i in range(so_cot_1_tiet) %}
+                <td>
+                    <input type="number" name="diem_1_tiet_{{ i }}[]" step="0.25" min="0" max="10"
+                           value="{{ hoc_sinh.diem_1_tiet[i] if hoc_sinh.diem_1_tiet and i < hoc_sinh.diem_1_tiet|length else '' }}">
+                </td>
+                {% endfor %}
+                <td><input type="number" name="diem_thi[]" step="0.25" min="0" max="10" value="{{ hoc_sinh.diem_thi }}">
+                </td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
         <div style="text-align: center;">
             <button type="submit">Lưu thông tin</button>
         </div>
     </form>
+</div>
+
 </body>
 </html>

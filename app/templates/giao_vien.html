@@ -4,39 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Giáo Viên</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #4CAF50;
+            background-image: url('https://res.cloudinary.com/dnbno2tkc/image/upload/v1735073428/index_kbcyiw.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Roboto', sans-serif;
             color: white;
-            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            flex-direction: column;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s ease-in-out;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            letter-spacing: 1px;
+        .title {
+            margin-top: 20px;
+            margin-left: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            animation: slideIn 1.5s ease-out;
+            color: #fff;
         }
 
         header p {
-            margin: 5px 0 0;
             font-size: 1.2em;
             font-style: italic;
+            color: #D1E1FF;
+            margin-top: 50px;
         }
 
         main {
+            margin-top: 20px;
             padding: 20px;
             text-align: center;
             flex: 1;
@@ -56,58 +60,72 @@
         ul li a {
             display: inline-block;
             padding: 15px 30px;
-            font-size: 1.2em;
+            font-size: 1.5em;
             color: white;
-            background-color: #1E90FF; /* Xanh biển */
+            background: #3A6EA5;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            max-width: 400px;
+            margin-left: 100px;
+            margin-top: 10px;
         }
 
         ul li a:hover {
-            background-color: #45a049; /* Xanh lá */
+            background: #25496e;
             transform: translateY(-3px);
         }
 
-        ul li a:active {
-            transform: translateY(2px);
-        }
 
-        ul li a.logout {
-            background-color: #e74c3c; /* Màu đỏ */
-        }
-
-        ul li a.logout:hover {
-            background-color: #c0392b; /* Màu đỏ đậm */
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 10px 0;
-            background-color: #4CAF50;
+        /* Nút đăng xuất ở góc trái */
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
             color: white;
-            text-align: center;
-            font-size: 0.9em;
+            text-decoration: none;
+            border-radius: 10px;
+            background-color: #e74c3c;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .logout:hover {
+            transform: scale(1.1);
+        }
+
+        /* Hiệu ứng fade-in cho background */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Hiệu ứng cho tiêu đề vào từ phía trên */
+        @keyframes slideIn {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
+
     <header>
-        <h1>Chào mừng {{ current_user.hoTen }}</h1>
-        <p>Đây là giao diện dành cho giáo viên</p>
+        <h1 class="title">Chào mừng {{ current_user.hoTen }}</h1>
+        <a href="/logout" class="logout">Đăng xuất</a>
     </header>
+
     <main>
         <ul>
             <li><a href="/giao-vien/{{taikhoan}}/danh-sach-lop-day">Danh sách lớp dạy</a></li>
             {% if giaovien.lop %}
             <li><a href="/giao-vien/{{taikhoan}}/lop-chu-nhiem">Danh sách lớp chủ nhiệm</a></li>
             {% endif %}
-            <li><a href="/logout" class="logout">Đăng xuất</a></li>
         </ul>
     </main>
-    <footer>
-        © 2024 - Trang giáo viên
-    </footer>
+
 </body>
 </html>
